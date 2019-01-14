@@ -8,7 +8,7 @@ const initialState = {
 }
 
 const INGREDIENT_PRICES = {
-  salad: 0.5,
+  lettuce: 0.5,
   cheese: 0.4,
   meat: 1.3,
   bacon: 0.7
@@ -37,7 +37,7 @@ const removeIngredient = (state, action) => {
 const setIngredients = (state, action) => {
   return updateObject(state, {
     ingredients: {
-      salad: action.ingredients.salad,
+      lettuce: action.ingredients.lettuce,
       bacon: action.ingredients.bacon,
       cheese: action.ingredients.cheese,
       meat: action.ingredients.meat
