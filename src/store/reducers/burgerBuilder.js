@@ -1,12 +1,14 @@
 import * as actionTypes from '../actions/actionTypes'
-import { updateObject } from '../utility'
+import { updateObject } from '../utility' // Takes old state and new state as arguments
 
 const initialState = {
   ingredients: null,
   totalPrice: 4,
-  error: false
+  error: false,
+  building: false // Change to true if user has edited their burger
 }
 
+// Set prices for burger ingredients
 const INGREDIENT_PRICES = {
   lettuce: 0.5,
   cheese: 0.4,
@@ -14,26 +16,31 @@ const INGREDIENT_PRICES = {
   bacon: 0.7
 }
 
+// Add ingredient to state, update price
 const addIngredient = (state, action) => {
   const updatedIngredient = {[action.ingredientName]: state.ingredients[action.ingredientName] + 1}
   const updatedIngredients = updateObject(state.ingredients, updatedIngredient)
   const updatedState = {
     ingredients: updatedIngredients,
-    totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+    totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
+    building: true
   }
   return updateObject(state, updatedState)
 }
 
+// Remove ingredient from state, update price
 const removeIngredient = (state, action) => {
   const updatedIng = {[action.ingredientName]: state.ingredients[action.ingredientName] - 1}
   const updatedIngs = updateObject(state.ingredients, updatedIng)
   const updatedSt = {
     ingredients: updatedIngs,
-    totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
+    totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
+    building: true
   }
   return updateObject(state, updatedSt)
 }
 
+// Set all ingredients to default values
 const setIngredients = (state, action) => {
   return updateObject(state, {
     ingredients: {
@@ -43,10 +50,12 @@ const setIngredients = (state, action) => {
       meat: action.ingredients.meat
     },
     totalPrice: 4,
-    error: false
+    error: false,
+    building: false
   })
 }
 
+// Handle failure of ingredient request
 const fetchIngredientsFailed = (state, action) => {
   return updateObject(state, {
     error: true
